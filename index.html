@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bạn là sinh vật nào ở đáy đại dương?</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg1:#020b1a;--bg2:#06284a;--ink:#e6f6ff;--mute:#8fb4cc;--glow:#4ff0d0;--card:rgba(255,255,255,.06);--line:rgba(120,220,255,.25);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:'Be Vietnam Pro',system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--bg2),var(--bg1) 70%) fixed;overflow-x:hidden}
+.bubbles{position:fixed;inset:0;pointer-events:none;z-index:0}
+.bubbles i{position:absolute;bottom:-40px;border-radius:50%;border:1px solid var(--line);background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.25),transparent 60%);animation:rise linear infinite}
+@keyframes rise{to{transform:translateY(-115vh)}}
+main{position:relative;z-index:1;max-width:640px;margin:0 auto;padding:28px 18px 50px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:26px 22px;backdrop-filter:blur(10px);box-shadow:0 0 50px rgba(79,240,208,.08)}
+h1{font-size:clamp(26px,6vw,38px);line-height:1.2;margin:8px 0 12px;font-weight:800;text-shadow:0 0 24px rgba(79,240,208,.5)}
+.eyebrow{color:var(--glow);letter-spacing:.2em;font-size:12px;font-weight:600;text-transform:uppercase}
+p{color:var(--mute);line-height:1.6}
+.big{font-size:64px;text-align:center;filter:drop-shadow(0 0 18px var(--glow));animation:float 4s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-10px)}}
+button{font:inherit;cursor:pointer;color:var(--ink)}
+.go{display:block;width:100%;margin-top:18px;padding:15px;border-radius:14px;border:0;font-weight:800;color:#012;background:linear-gradient(90deg,#4ff0d0,#6bb8ff);box-shadow:0 0 28px rgba(79,240,208,.45)}
+.bar{height:6px;border-radius:9px;background:rgba(255,255,255,.1);overflow:hidden;margin:6px 0 18px}
+.bar b{display:block;height:100%;width:0;background:linear-gradient(90deg,#4ff0d0,#6bb8ff);transition:width .4s}
+.n{color:var(--glow);font-size:13px;font-weight:600}
+h2{font-size:21px;line-height:1.35;margin:6px 0 16px}
+.opt{display:flex;gap:12px;align-items:center;width:100%;text-align:left;margin:10px 0;padding:13px 14px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid var(--line);transition:.2s}
+.opt:hover,.opt:focus-visible{border-color:var(--glow);background:rgba(79,240,208,.12);transform:translateX(4px);outline:0}
+.opt span{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;color:#012;background:var(--glow)}
+.res-t{font-size:30px;font-weight:800;text-align:center;margin:6px 0}
+.tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:12px 0}
+.tags em{font-style:normal;font-size:13px;padding:5px 12px;border-radius:99px;border:1px solid var(--glow);color:var(--glow)}
+.row{display:flex;align-items:center;gap:10px;font-size:13px;margin:8px 0;color:var(--mute)}
+.row .bar{flex:1;margin:0}
+.row .bar b{width:0}
+.hide{display:none}
+</style>
+</head>
+<body>
+<div class="bubbles" id="bub"></div>
+<main>
+<section class="card" id="intro">
+  <div class="big">🌊</div>
+  <div class="eyebrow" style="text-align:center">Trắc nghiệm · 15 câu</div>
+  <h1 style="text-align:center">Bạn là sinh vật nào ở đáy đại dương?</h1>
+  <p style="text-align:center">Ở độ sâu 4.000 mét không có ánh sáng, chỉ còn bản chất thật của mỗi sinh vật. Trả lời thật lòng, rồi xem ai đang chờ bạn dưới đó.</p>
+  <button class="go" onclick="start()">Lặn xuống →</button>
+</section>
+<section class="card hide" id="quiz">
+  <div class="n" id="num"></div>
+  <div class="bar"><b id="pg"></b></div>
+  <h2 id="q"></h2>
+  <div id="opts"></div>
+</section>
+<section class="card hide" id="res">
+  <div class="big" id="rE"></div>
+  <div class="eyebrow" style="text-align:center">Bạn là</div>
+  <div class="res-t" id="rT"></div>
+  <div class="tags" id="rG"></div>
+  <p id="rD" style="text-align:center"></p>
+  <div id="rB"></div>
+  <button class="go" onclick="start()">Lặn lại từ đầu ↻</button>
+</section>
+</main>
+<script>
+const R=[
+{e:"🐡",n:"Cá câu đèn lồng",t:["Cuốn hút","Kiên nhẫn","Độc lập"],d:"Giữa bóng tối, bạn mang theo ánh sáng riêng. Bạn không chạy theo ai, bạn chờ đúng người, đúng thời điểm và họ tự tìm đến. Vẻ ngoài tĩnh lặng của bạn giấu một sức hút rất khó cưỡng."},
+{e:"🦑",n:"Mực khổng lồ",t:["Thông minh","Linh hoạt","Bí ẩn"],d:"Bạn quan sát nhiều hơn nói, nghĩ trước khi hành động và biết đổi màu theo từng hoàn cảnh. Người khác khó đoán bạn, vì bạn luôn có thêm vài nước đi trong tay áo."},
+{e:"🪼",n:"Sứa bất tử",t:["Lạc quan","Hồi sinh","Tự do"],d:"Ngã bao nhiêu lần bạn cũng làm lại được. Bạn sống nhẹ nhàng, thả trôi theo dòng và không để quá khứ giữ chân mình. Năng lượng dễ chịu của bạn khiến ai ở gần cũng thấy bình yên."},
+{e:"🐋",n:"Cá voi 52Hz",t:["Sâu sắc","Nhạy cảm","Độc đáo"],d:"Tiếng hát của bạn ở một tần số riêng nên không phải ai cũng nghe thấy. Nhưng bạn vẫn hát, bằng cảm xúc thật và chiều sâu hiếm có. Người nào hiểu được bạn sẽ thấy bạn rất đáng quý."},
+{e:"🦈",n:"Cá mập Greenland",t:["Điềm tĩnh","Bền bỉ","Từng trải"],d:"Bạn sống chậm, chắc và không bao giờ vội. Trong khi người khác chạy đua, bạn chọn đi đường dài và đi đến cùng. Sự bình thản của bạn là điểm tựa khiến ai cũng thấy an tâm."},
+{e:"🦀",n:"Cua yeti",t:["Ấm áp","Chu đáo","Gắn kết"],d:"Bạn là người tìm hơi ấm và cũng là người tạo ra hơi ấm cho cả nhóm. Bạn quan tâm từng chi tiết nhỏ và coi những người thân yêu là cả thế giới. Có bạn ở đó, nơi lạnh nhất cũng trở nên giống nhà."}
+];
+const Q=[
+["Cuối tuần lý tưởng của bạn là…",["Ở nhà một mình, tắt thông báo, bật đèn vàng nhỏ","Lang thang đến chỗ chưa ai biết","Không kế hoạch, thích đâu đi đó","Nghe nhạc và viết vài dòng nhật ký","Đi bộ thong thả, không vội, không cần ai","Nấu một bữa ngon rồi rủ bạn bè qua nhà"]],
+["Ở một buổi tiệc, bạn thường…",["Đứng ở góc nhưng ai cũng tự tìm tới","Quan sát cả phòng rồi chọn 1–2 người để nói chuyện","Hòa vào nhóm nào cũng được","Tìm một người để trò chuyện thật sâu","Ngồi yên, nói ít, ai cần thì mình có mặt","Lo đồ ăn thức uống để ai cũng thoải mái"]],
+["Khi thất bại, bạn…",["Lặng lẽ rút lui và chờ thời cơ","Phân tích nguyên nhân, đổi chiến thuật","Ngủ một giấc, mai làm lại","Buồn khá lâu và nghĩ rất nhiều","Bình thản, thất bại cũng chỉ là một chặng dài","Tìm bạn bè để kể và xin một cái ôm"]],
+["Bạn bè hay nói bạn là người…",["Bí ẩn mà cuốn hút","Thông minh, khó đoán","Dễ chịu, nhẹ nhàng","Tinh tế, hay trầm tư","Điềm tĩnh, rất đáng tin","Ấm áp, chu đáo"]],
+["Điều bạn sợ nhất?",["Bị ép phải vội vàng","Sự nhàm chán, bị nhốt trong khuôn","Bị ràng buộc quá chặt","Không ai thật sự hiểu mình","Sống vội mà chẳng kịp cảm nhận","Bị bỏ lại một mình giữa nơi lạnh lẽo"]],
+["Màu bạn mê nhất?",["Vàng ấm của ánh đèn đêm","Tím than huyền bí","Xanh trong veo, hồng nhạt","Xanh navy thẳm sâu","Xám thép của mặt biển trước bão","Cam ấm như lò sưởi"]],
+["Cách bạn kết bạn?",["Để người khác đến với mình","Thử nhiều kiểu, tùy từng người","Gặp ai cũng cởi mở","Ít bạn nhưng thân rất sâu","Từ từ, thân dần theo năm tháng","Rủ nhau ăn uống, lập nhóm tụ tập"]],
+["Giờ bạn tỉnh táo nhất?",["Khuya, khi thế giới đã yên","Không cố định, tùy hứng","Sáng sớm đầy nắng","Đêm tĩnh lặng, lúc mọi người ngủ","Cả ngày đều đều, nhịp sống ổn định","Buổi tối quây quần bên mọi người"]],
+["Công việc mơ ước?",["Tự làm chủ theo cách riêng","Nghiên cứu, giải mã những bài toán khó","Freelance và đi khắp nơi","Sáng tạo âm nhạc, nghệ thuật","Công việc ổn định, làm bền bỉ nhiều năm","Chăm sóc và kết nối mọi người"]],
+["Khi phải nói một điều khó nói…",["Chờ đúng lúc rồi nói thật gọn","Chọn từng chữ thật khéo","Nói thẳng nhưng mỉm cười","Viết ra, hoặc diễn đạt theo cách riêng","Nói chậm, chắc, từng ý một","Rủ đi ăn rồi nhẹ nhàng nói"]],
+["Cách bạn giải tỏa căng thẳng?",["Ngồi một mình trong không gian tối, yên tĩnh","Chia nhỏ vấn đề và xử lý từng bước","Đi dạo, đừng nghĩ gì cả","Nghe một bản nhạc buồn và để cảm xúc chảy ra","Đi chậm, thở sâu, mặc kệ ồn ào","Ở gần người thân và được quan tâm"]],
+["Điều bạn tự hào nhất ở mình?",["Sức hút rất riêng","Khả năng thích nghi","Sức bền, ngã là đứng dậy","Chiều sâu cảm xúc","Sự bền bỉ qua năm tháng","Làm ai cũng thấy mình thuộc về"]],
+["Nếu có một siêu năng lực…",["Tỏa sáng để thu hút điều mình cần","Biến hình, tàng hình tùy ý","Trẻ lại vô hạn","Nói chuyện được với mọi sinh vật","Sống thật thọ và thong dong ngắm thời gian trôi","Tỏa hơi ấm cho tất cả mọi người"]],
+["Đồ uống hợp bạn nhất?",["Cà phê đen không đường","Trà ô long hoặc món lạ nào đó","Trà đào mát lạnh","Ly sữa nóng trước khi ngủ","Nước lọc, đơn giản là đủ","Chè nóng, miễn là ăn cùng nhau"]],
+["Câu nào giống bạn nhất?",["“Hãy tự tìm đến tôi.”","“Tôi biết nhiều hơn tôi nói.”","“Ngày mai là một khởi đầu mới.”","“Tôi vẫn hát, mong ai đó nghe thấy.”","“Chậm mà chắc, tôi đi đường dài.”","“Có nhà, có người thương là đủ.”"]]
+];
+let i=0,s=Array(6).fill(0);
+const $=id=>document.getElementById(id),show=id=>["intro","quiz","res"].forEach(k=>$(k).classList.toggle("hide",k!==id));
+function start(){i=0;s=Array(6).fill(0);show("quiz");render();scrollTo(0,0)}
+function render(){
+  $("num").textContent="Câu "+(i+1)+" / "+Q.length;
+  $("pg").style.width=(i/Q.length*100)+"%";
+  $("q").textContent=Q[i][0];
+  $("opts").innerHTML="";
+  Q[i][1].forEach((t,k)=>{
+    const b=document.createElement("button");b.className="opt";
+    b.innerHTML="<span>"+"ABCDEF"[k]+"</span><div></div>";b.lastChild.textContent=t;
+    b.onclick=()=>{s[k]++;++i<Q.length?render():finish()};
+    $("opts").appendChild(b);
+  });
+}
+function finish(){
+  const m=s.indexOf(Math.max(...s)),r=R[m];
+  $("rE").textContent=r.e;$("rT").textContent=r.n;$("rD").textContent=r.d;
+  $("rG").innerHTML=r.t.map(x=>"<em>"+x+"</em>").join("");
+  $("rB").innerHTML=R.map((x,k)=>'<div class="row"><span style="width:120px">'+x.e+" "+x.n+'</span><div class="bar"><b data-w="'+Math.round(s[k]/Q.length*100)+'"></b></div><span>'+Math.round(s[k]/Q.length*100)+"%</span></div>").join("");
+  show("res");scrollTo(0,0);
+  setTimeout(()=>document.querySelectorAll("#rB b").forEach(b=>b.style.width=b.dataset.w+"%"),80);
+}
+(function(){const b=$("bub");for(let k=0;k<22;k++){const e=document.createElement("i"),z=6+Math.random()*26;
+e.style.cssText="left:"+Math.random()*100+"%;width:"+z+"px;height:"+z+"px;animation-duration:"+(9+Math.random()*14)+"s;animation-delay:-"+Math.random()*20+"s";b.appendChild(e)}})();
+</script>
+</body>
+</html>
